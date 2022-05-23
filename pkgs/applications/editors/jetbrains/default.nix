@@ -117,6 +117,7 @@ let
       extraWrapperArgs = [
         ''--set M2_HOME "${maven}/maven"''
         ''--set M2 "${maven}/maven/bin"''
+        ''--set _JAVA_AWT_WM_NONREPARENTING 1''
       ];
       meta = with lib; {
         homepage = "https://www.jetbrains.com/idea/";
