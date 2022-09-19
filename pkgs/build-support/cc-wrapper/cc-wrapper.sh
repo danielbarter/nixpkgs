@@ -195,6 +195,7 @@ fi
 if [ -n $NIX_COMPILE_COMMANDS_HOOK ]; then
     PWD=$(pwd)
     $NIX_COMPILE_COMMANDS_HOOK "$PWD" "@prog@" "$extraBefore" "$params" "$extraAfter"
+fi
 
 PATH="$path_backup"
 # Old bash workaround, see above.
