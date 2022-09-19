@@ -191,6 +191,11 @@ if (( "${NIX_DEBUG:-0}" >= 1 )); then
     printf "  %q\n" ${extraAfter+"${extraAfter[@]}"} >&2
 fi
 
+# hook for generating compile_commands.json
+if [ -n $NIX_COMPILE_COMMANDS_HOOK ]; then
+    PWD=$(pwd)
+    $NIX_COMPILE_COMMANDS_HOOK "$PWD" "@prog@" "$extraBefore" "$params" "$extraAfter"
+
 PATH="$path_backup"
 # Old bash workaround, see above.
 
