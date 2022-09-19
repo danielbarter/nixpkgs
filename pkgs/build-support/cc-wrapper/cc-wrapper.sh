@@ -193,7 +193,10 @@ fi
 
 # hook for generating compile_commands.json
 if [ -n "${NIX_COMPILE_COMMANDS_HOOK:-}" ]; then
-    $NIX_COMPILE_COMMANDS_HOOK $(pwd) @prog@ $extraBefore $params $extraAfter
+    $NIX_COMPILE_COMMANDS_HOOK $(pwd) @prog@ \
+       ${extraBefore+"${extraBefore[@]}"} \
+       ${params+"${params[@]}"} \
+       ${extraAfter+"${extraAfter[@]}"}
 fi
 
 PATH="$path_backup"
