@@ -192,7 +192,7 @@ if (( "${NIX_DEBUG:-0}" >= 1 )); then
 fi
 
 # hook for generating compile_commands.json
-if [ -v $NIX_COMPILE_COMMANDS_HOOK ]; then
+if [ -n "${NIX_COMPILE_COMMANDS_HOOK:-}" ]; then
     PWD=$(pwd)
     $NIX_COMPILE_COMMANDS_HOOK "$PWD" "@prog@" "$extraBefore" "$params" "$extraAfter"
 fi
