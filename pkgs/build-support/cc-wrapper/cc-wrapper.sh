@@ -193,8 +193,7 @@ fi
 
 # hook for generating compile_commands.json
 if [ -n "${NIX_COMPILE_COMMANDS_HOOK:-}" ]; then
-    PWD=$(pwd)
-    $NIX_COMPILE_COMMANDS_HOOK "$PWD" "@prog@" "$extraBefore" "$params" "$extraAfter"
+    $NIX_COMPILE_COMMANDS_HOOK $(pwd) @prog@ $extraBefore $params $extraAfter
 fi
 
 PATH="$path_backup"
