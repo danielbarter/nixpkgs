@@ -195,7 +195,7 @@ if [[ "$NIX_DONT_SET_RPATH_@suffixSalt@" != 1 && "$linkType" != static-pie ]]; t
     for dir in ${libDirs+"${libDirs[@]}"}; do
         for lib in "${libs[@]}"; do
             soname="$dir/$lib"
-            if [ -e $soname ] && [ "${sonames[$soname]:-}" ];
+            if [ -e $soname ] && [ "${sonames[$soname]:-}" ]; then
                sonames["$soname"]=1
                extraAfter+=(-soname "$file")
             fi
