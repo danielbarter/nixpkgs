@@ -191,37 +191,16 @@ fi
 
 # Add all used dynamic libraries to the rpath.
 if [[ "$NIX_DONT_SET_RPATH_@suffixSalt@" != 1 && "$linkType" != static-pie ]]; then
-    # For each directory in the library search path (-L...),
-    # see if it contains a dynamic library used by a -l... flag.  If
-    # so, add the directory to the rpath.
-    # It's important to add the rpath in the order of -L..., so
-    # the link time chosen objects will be those of runtime linking.
-    declare -A rpaths
+    declare -A sonames
     for dir in ${libDirs+"${libDirs[@]}"}; do
-        if [[ "$dir" =~ [/.][/.] ]] && dir2=$(readlink -f "$dir"); then
-            dir="$dir2"
-        fi
-        if [ -n "${rpaths[$dir]:-}" ] || [[ "$dir" != "${NIX_STORE:-}"/* ]]; then
-            # If the path is not in the store, don't add it to the rpath.
-            # This typically happens for libraries in /tmp that are later
-            # copied to $out/lib.  If not, we're screwed.
-            continue
-        fi
-        for path in "$dir"/*; do
-            file="${path##*/}"
-            if [ "${libs[$file]:-}" ]; then
-                # This library may have been provided by a previous directory,
-                # but if that library file is inside an output of the current
-                # derivation, it can be deleted after this compilation and
-                # should be found in a later directory, so we add all
-                # directories that contain any of the libraries to rpath.
-                rpaths["$dir"]=1
-                extraAfter+=(-rpath "$dir")
-                break
+        for lib in "${libs[@]}"; do
+            soname="$dir/$lib"
+            if [ -e $soname ] && [ "${sonames[$soname]:-}" ];
+               sonames["$soname"]=1
+               extraAfter+=(-soname "$file")
             fi
         done
     done
-
 fi
 
 # This is outside the DONT_SET_RPATH branch because it's more targeted and we
